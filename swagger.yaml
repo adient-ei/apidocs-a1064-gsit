@@ -185,6 +185,12 @@ components:
               logicalId:
                 type: string
                 example: SUPPLIERTRANSACTION
+              component:
+                type: string
+                example: SUPPLIERTRANSACTION
+              task:
+                type: string
+                example: SUPPLIERTRANSACTION  
               referenceId:
                 type: string
                 example: 9999
