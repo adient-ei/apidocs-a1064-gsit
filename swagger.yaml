@@ -106,7 +106,21 @@ paths:
         required: true
         schema:
           type: string
-          example: 10730076
+          example: 10608533
+      - name: transactionId
+        in: query
+        description: Transaction Id
+        required: true
+        schema:
+          type: string
+          example: 6531174
+      - name: validationComponentType
+        in: query
+        description: Validation Component Type
+        required: true
+        schema:
+          type: string
+          example: SP
       responses:
         '200':
           description: OK
@@ -122,12 +136,15 @@ paths:
                 type: object
                 description: ''
                 properties:
-                  code:
-                    type: string
-                    example: 401
-                  message:
-                    type: string
-                    example: Invalid Authorization key for resource
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: 401
+                      message:
+                        type: string
+                        example: Invalid Authorization key for resource
         '400':
           description: Bad data
           content:
@@ -136,32 +153,15 @@ paths:
                 type: object
                 description: ''
                 properties:
-                  code:
-                    type: string
-                    example: 400
-                  message:
-                    type: string
-                    example: Logical Id missing or not SUPPLIERTRANSACTION
-        '404':
-          description: Resource Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                description: ''
-                properties:
-                  code:
-                    type: string
-                    example: 404
-                  message:
-                    type: string
-                    example: Resource Not Found or Component not found for Component Id
-        '500':
-          description: Internal server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorInternal'                
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: 400
+                      message:
+                        type: string
+                        example: "Invalid Component Id or Transaction Id or Validation Component Id"
 security:
   - ApiKeyAuth: []
 components:
@@ -250,82 +250,85 @@ components:
         sender:
           type: object
           properties:
+            trackingId:
+              type: string
+              example: "9999|131825_SP|SITCOMPONENTDETAILS|2023-03-02T09:05:13"    
             logicalId:
               type: string
               example: COMPONENTDETAILS
+            task:
+              type: string
+              example: SITCOMPONENTDETAILS
             referenceId:
               type: string
               example: 9999
             authorizationId:
-              type: string
-            trackingId:
-              type: string
-              example: "9999|14789067_SP|SITCOMPONENTDETAILS|2023-01-30T07:02:17.0-05:00"
-            task:
               type: string
             mode:
               type: string
               example: T
               description: T for Test mode 
         dataArea:
-          type: object
-          properties:
-            componentId:
-              type: string
-              example: 10730076
-            componentDesc:
-              type: string
-              example: "[06] 1st Row LH 8WP Fabric w/heat - A2"
-            phaseName:
-              type: string
-              example: "1st Row DV"
-            projectNbr:
-              type: string
-              example: 12359TE0022502
-            testEngineerNme:
-              type: string
-              example: Last Name, First Name
-            phoneNbr:
-              type: string
-              example: 0
-            dvpNbr:
-              type: string
-              example: 149825
-            adientPlantName:
-              type: string
-              example: Adient - Plymouth
-            oem:
-              type: string
-              example: Honda
-            programName:
-              type: string
-              example: 2023 Honda T90A Seat
-            validationComponentTyp:
-              type: string
-              example: SP
-            fxType:
-              type: string
-              example: NA
-            fxCheckInStatus:
-              type: string
-              example: NA
-            fxCurrentLoc:
-              type: string
-              example: NA
-            woc:
-              type: array
-              items:
-                type: object
-                properties:
-                  workOrderId:
-                    type: string
-                    example: 10301325
-                  testClassName:
-                    type: string
-                    example: Material Properties
-                  testSubclassName:
-                    type: string
-                    example: Properties
+          type: array
+          items:
+            type: object
+            properties:
+              componentId:
+                type: string
+                example: 10608533
+              componentDesc:
+                type: string
+                example: "[01] 1st Row LH PWR Cloth, TG7 A3 Frame w/ T90A Trim"
+              phaseName:
+                type: string
+                example: "1st Row I/E"
+              projectNbr:
+                type: string
+                example: 12359TE0020202
+              testEngineerNme:
+                type: string
+                example: Last Name, First Name
+              phoneNbr:
+                type: string
+                example: 0
+              dvpNbr:
+                type: string
+                example: 131825
+              adientPlantName:
+                type: string
+                example: Adient - Plymouth
+              oem:
+                type: string
+                example: Honda
+              programName:
+                type: string
+                example: 2022 Honda T90A Seat
+              validationComponentTyp:
+                type: string
+                example: SP
+              fxType:
+                type: string
+                example: NA
+              fxCheckInStatus:
+                type: string
+                example: NA
+              fxCurrentLoc:
+                type: string
+                example: NA
+              woc:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    workOrderId:
+                      type: string
+                      example: 10228135
+                    testClassName:
+                      type: string
+                      example: Foam and Trim
+                    testSubclassName:
+                      type: string
+                      example: Ingress/Egress
     ErrorInternal:
       required:
       - code
