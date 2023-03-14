@@ -107,13 +107,6 @@ paths:
         schema:
           type: string
           example: 10608533
-      - name: transactionId
-        in: query
-        description: Transaction Id
-        required: true
-        schema:
-          type: string
-          example: 6531174
       - name: validationComponentType
         in: query
         description: Validation Component Type
