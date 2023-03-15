@@ -50,49 +50,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: ''
-                properties:
-                  code:
-                    type: string
-                    example: 401
-                  message:
-                    type: string
-                    example: Invalid Authorization key for resource
-        '400':
-          description: Bad data
-          content:
-            application/json:
-              schema:
-                type: object
-                description: ''
-                properties:
-                  code:
-                    type: string
-                    example: 400
-                  message:
-                    type: string
-                    example: Logical Id missing or not SUPPLIERTRANSACTION
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
         '404':
-          description: Resource Not Found
+          description: Not Found
           content:
             application/json:
               schema:
-                type: object
-                description: ''
-                properties:
-                  code:
-                    type: string
-                    example: 404
-                  message:
-                    type: string
-                    example: Resource Not Found
-        '500':
-          description: Internal server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorInternal'
+                $ref: '#/components/schemas/ErrorNotFoundInvalidObjectKeySupplierTransaction'
   /component:
     get:
       summary: Component Details
@@ -126,35 +90,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                description: ''
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        example: 401
-                      message:
-                        type: string
-                        example: Invalid Authorization key for resource
-        '400':
-          description: Bad data
+                $ref: '#/components/schemas/ErrorInvalidAuthorizationKey'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
-                type: object
-                description: ''
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      code:
-                        type: string
-                        example: 400
-                      message:
-                        type: string
-                        example: "Invalid Component Id or Transaction Id or Validation Component Id"
+                $ref: '#/components/schemas/ErrorNotFoundInvalidComponentId'
 security:
   - ApiKeyAuth: []
 components:
@@ -322,15 +264,42 @@ components:
                     testSubclassName:
                       type: string
                       example: Ingress/Egress
-    ErrorInternal:
-      required:
-      - code
-      - message
+    ErrorNotFoundInvalidComponentId:
       type: object
+      description: Error Message for Resource not found
       properties:
-        code:
-          type: string
-          example: 500
-        message:
-          type: string
-          example: Error at target end     
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "404"
+            message:
+              type: string
+              example: "Invalid Component Id or Validation Component Id"
+    ErrorNotFoundInvalidObjectKeySupplierTransaction:
+      type: object
+      description: Error Message for Resource not found
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "404"
+            message:
+              type: string
+              example: "Resource Not Found or LogicalId is either missing or Invalid. Valid values for LogicalId is SUPPLIERTRANSACTION"
+    ErrorInvalidAuthorizationKey:
+      type: object
+      description: Error Message for Invalid Authorization Key
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "401"
+            message:
+              type: string
+              example: "Invalid Authorization key for resource"
